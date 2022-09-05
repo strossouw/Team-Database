@@ -17,7 +17,7 @@ const promptUser = () => {
             choices: ['View All Departments', 'View All Roles', 'View All Employees', 'Add a Department', 'Add a Role', 'Add an Employee', 'Update an Employee Role'],
         },
     ])
-        .then(choice => {
+    .then(choice => {
             if (choice.menu === 'View All Departments') {
                 console.log('View All Departments');
                 viewDepartments();
@@ -91,8 +91,8 @@ const promptRole = () => {
     ])
         .then(roleData => {
 
-            const sql = `Select departments.id AS value, departments.title AS name FROM departments`;
-            connection.query(sql, (err, result) => {
+            const sql = `Select department.dept_id AS value, department.title AS name FROM department`;
+            db.query(sql, (err, result) => {
                 if (err) throw err;
                 const departmentArray = result;
 
@@ -139,8 +139,8 @@ const promptEmployee = () => {
         }
     ])
         .then(nameData => {
-            const sql = `Select roles.id AS value, roles.title AS name FROM roles`;
-            connection.query(sql, (err, result) => {
+            const sql = `Select roles.role_id AS value, roles.title AS name FROM roles`;
+            db.query(sql, (err, result) => {
                 if (err) throw err;
                 const roleArray = result;
 
@@ -153,8 +153,8 @@ const promptEmployee = () => {
                     }
                 ])
                     .then(roleData => {
-                        const sql = `Select employees.id AS value, CONCAT(employees.first_name, ' ', employees.last_name) AS name FROM employees`;
-                        connection.query(sql, (err, result) => {
+                        const sql = `Select employees.emp_id AS value, CONCAT(employees.first_name, ' ', employees.last_name) AS name FROM employees`;
+                        db.query(sql, (err, result) => {
                             if (err) throw err;
                             const empArray = result;
 
@@ -178,13 +178,13 @@ const promptEmployee = () => {
 };
 
 const promptUpdate = () => {
-    const sql = `Select employees.id AS value, CONCAT(employees.first_name, ' ', employees.last_name) AS name FROM employees`;
-    connection.query(sql, (err, result) => {
+    const sql = `Select employees.emp_id AS value, CONCAT(employees.first_name, ' ', employees.last_name) AS name FROM employees`;
+    db.query(sql, (err, result) => {
         if (err) throw err;
         const empArray = result;
 
-        const sql2 = `Select roles.id AS value, roles.title AS name FROM roles`;
-        connection.query(sql2, (err, result) => {
+        const sql2 = `Select roles.role_id AS value, roles.title AS name FROM roles`;
+        db.query(sql2, (err, result) => {
             if (err) throw err;
             const roleArray = result;
 
@@ -225,7 +225,7 @@ const promptConfirm = () => {
             if (answer.confirmDoMore) {
                 return promptUser();
             } else {
-                return console.log("The employee database is now closed.");
+                return console.log("The employee database is now closed");
             }
         });
 };

@@ -1,17 +1,10 @@
-const mysql = require('mysql2');
 const cTable = require('console.table');
-const Department = require('./lib/Department');
 const index = require('./index');
+const db = require('./db/connection');
 
-const connection = mysql.createConnection({
-    host: 'localhost',
-    user: 'root',
-    password: 'Password',
-    database: 'company'
-});
 
 const viewDepartments = () => {
-    connection.execute(
+    db.execute(
         `SELECT * FROM departments;`,
         function (err, results) {
             const table = cTable.getTable(results);
@@ -22,11 +15,8 @@ const viewDepartments = () => {
 };
 
 const viewRoles = () => {
-    connection.execute(
-        `SELECT roles.*, departments.title AS department_name
-        FROM roles
-        LEFT JOIN departments ON roles.department_id = departments.id
-        ORDER BY department_id ASC;`,
+    db.execute(
+        `SELECT title AS "Job Title", role_id AS "Job ID", dept_id AS "Department ID", salary AS "Salary" FROM roles;`,
         function (err, results) {
             const table = cTable.getTable(results);
             console.log(table);
@@ -36,12 +26,14 @@ const viewRoles = () => {
 };
 
 const viewEmployees = () => {
-    connection.execute(
-        `SELECT employees.id AS id, employees.first_name AS first_name, employees.last_name AS last_name, roles.title AS job_title, roles.salary AS salary, departments.title AS department_name, CONCAT(manager.first_name, ' ', manager.last_name) AS manager_name
+    db.execute(
+        `SELECT employees.emp_id AS "Employee ID", CONCAT (employees.first_name, ' ', employees.last_name) AS "Employee Name", roles.title AS "Job Title", roles.salary AS "Salary", department.title AS "Department Name", 
+		CONCAT(manager.first_name, ' ', manager.last_name) AS Manager
         FROM employees
-        LEFT JOIN roles ON employees.role_id = roles.id AND employees.role_id = roles.id
-        LEFT JOIN departments ON roles.department_id = departments.id
-        LEFT JOIN employees manager ON employees.manager_id = manager.id;`,
+        LEFT JOIN roles ON employees.role_id = roles.role_id 
+        LEFT JOIN department ON roles.dept_id = department.dept_id
+        LEFT JOIN employees manager ON manager.manager_id = employees.manager_id`
+    ,
         function (err, results) {
             const table = cTable.getTable(results);
             console.log(table);
@@ -51,29 +43,29 @@ const viewEmployees = () => {
 };
 
 const addDepartment = department => {
-    connection.execute(
-        `INSERT INTO departments (title) VALUE ("${department.title}");`,
+    db.execute(
+        `INSERT INTO department (title) VALUE ( "${department.title}");`,
     );
     viewDepartments();
 };
 
 const addRole = role => {
-    connection.execute(
-        `INSERT INTO roles (title, salary, department_id) VALUES ("${role.title}", "${role.salary}", "${role.departmentID}");`,
+    db.execute(
+        `INSERT INTO roles (title, salary, dept_id) VALUES ("${role.title}", ${role.salary}, ${role.dept_id});`,
         );
     viewRoles();
 };
 
 const addEmployee = employee => {
-    connection.execute(
-        `INSERT INTO employees (first_name, last_name, role_id, manager_id) VALUES ("${employee.firstName}", "${employee.lastName}", "${employee.roleID}", "${employee.managerID}");`,
+    db.execute(
+        `INSERT INTO employees (first_name, last_name, manager_id) VALUES ("${employee.first_name}", "${employee.last_name}", "${employee.manager_id}");`,
         );
     viewEmployees();
 };
 
 const updateRole = update => {
-    connection.execute(
-        `UPDATE employees SET role_id = "${update.roleID}" WHERE id = "${update.employeeID}";`,
+    db.execute(
+        `UPDATE employees SET role_id = "${update.role_id}" WHERE id = "${update.emp_id}";`,
     );
     viewEmployees();
 };
