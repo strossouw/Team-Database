@@ -27,12 +27,14 @@ const viewRoles = () => {
 
 const viewEmployees = () => {
     db.execute(
-        `SELECT employees.emp_id AS "Employee ID", CONCAT (employees.first_name, ' ', employees.last_name) AS "Employee Name", roles.title AS "Job Title", roles.salary AS "Salary", department.title AS "Department Name", 
-		CONCAT(manager.first_name, ' ', manager.last_name) AS Manager
+        `SELECT employees.emp_id, employees.first_name AS "first name", employees.last_name AS "last name", roles.title, department.title AS department, roles.salary, concat(manager.first_name, " ", manager.last_name) AS manager
         FROM employees
-        LEFT JOIN roles ON employees.role_id = roles.role_id 
-        LEFT JOIN department ON roles.dept_id = department.dept_id
-        LEFT JOIN employees manager ON manager.manager_id = employees.manager_id`
+        LEFT JOIN roles
+        ON employees.role_id = roles.role_id
+        LEFT JOIN department
+        ON roles.dept_id = department.dept_id
+        LEFT JOIN employees manager
+        ON manager.emp_id = employees.manager_id;`
     ,
         function (err, results) {
             const table = cTable.getTable(results);
