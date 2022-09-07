@@ -40,10 +40,13 @@ Run the command node index to display the option menu.
 ![image](https://user-images.githubusercontent.com/105831699/188964970-a11f74cd-8452-45ec-8974-477f319a433d.png)
 
 Use the arrow keys to  chose option that you would like to activate and follow the prompts
+
 ![image](https://user-images.githubusercontent.com/105831699/188965063-5e5ad6c7-60fc-4110-af65-6e55896b97df.png)
 
 ![image](https://user-images.githubusercontent.com/105831699/188965159-f9606237-e3b2-46fa-b306-0f3a7da469f5.png)
+
 When done select N to close
+
 
 ![image](https://user-images.githubusercontent.com/105831699/188965212-713d4974-544f-40a9-9049-0427f5c368e9.png)
 
