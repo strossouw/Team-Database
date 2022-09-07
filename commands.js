@@ -5,7 +5,7 @@ const db = require('./db/connection');
 
 const viewDepartments = () => {
     db.execute(
-        `SELECT * FROM departments;`,
+        `SELECT * from department;`,
         function (err, results) {
             const table = cTable.getTable(results);
             console.log(table);
