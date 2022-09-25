@@ -139,7 +139,7 @@ const promptEmployee = () => {
         }
     ])
         .then(nameData => {
-            const sql = `Select roles.role_id AS value, roles.title AS name FROM roles`;
+            const sql = `Select roles.role_id AS value, roles.title AS value FROM roles`;
             db.query(sql, (err, result) => {
                 if (err) throw err;
                 const roleArray = result;
@@ -178,12 +178,13 @@ const promptEmployee = () => {
 };
 
 const promptUpdate = () => {
-    const sql = `Select employees.emp_id AS value, CONCAT(employees.first_name, ' ', employees.last_name) AS name FROM employees`;
+    const sql = `Select employees.emp_id AS value, CONCAT(employees.first_name, ' ', employees.last_name) AS value FROM employees`;
     db.query(sql, (err, result) => {
+       
         if (err) throw err;
         const empArray = result;
-
-        const sql2 = `Select roles.role_id AS value, roles.title AS name FROM roles`;
+         console.log(empArray);
+        const sql2 = `Select roles.role_id AS value, roles.title AS value FROM roles`;
         db.query(sql2, (err, result) => {
             if (err) throw err;
             const roleArray = result;
@@ -192,19 +193,19 @@ const promptUpdate = () => {
             inquirer.prompt([
                 {
                     type: 'list',
-                    name: 'employeeID',
+                    name: 'employee_id',
                     message: "Please select the employee who's role you'd like to update.",
                     choices: empArray
                 },
                 {
                     type: 'list',
-                    name: 'roleID',
+                    name: 'role_id',
                     message: "Please select the new role for the employee.",
                     choices: roleArray
                 }
             ])
                 .then(updateData => {
-                    const update = new Update(updateData.employeeID, updateData.roleID);
+                    const update = new Update(updateData.employee_id, updateData.role_id);
                     updateRole(update);
                     console.log("Updated Role");
                 });

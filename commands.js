@@ -27,7 +27,7 @@ const viewRoles = () => {
 
 const viewEmployees = () => {
     db.execute(
-        `SELECT employees.emp_id, employees.first_name AS "first name", employees.last_name AS "last name", roles.title, department.title AS department, roles.salary, concat(manager.first_name, " ", manager.last_name) AS manager
+        `SELECT employees.emp_id as "EMP ID" , concat(employees.first_name, '', employees.last_name ) AS "EMP Name", roles.title as "Job Title" , department.title AS Department, roles.salary as Salary, concat(manager.first_name, " ", manager.last_name) AS Manager
         FROM employees
         LEFT JOIN roles
         ON employees.role_id = roles.role_id
