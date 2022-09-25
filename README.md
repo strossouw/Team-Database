@@ -1,4 +1,4 @@
-# Team-Profile-Builder
+# Team Database
 Team Database Project
 
  ![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg)

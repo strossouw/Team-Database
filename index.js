@@ -178,7 +178,7 @@ const promptEmployee = () => {
 };
 
 const promptUpdate = () => {
-    const sql = `Select employees.emp_id AS value, CONCAT(employees.first_name, ' ', employees.last_name) AS value FROM employees`;
+    const sql = `Select employees.emp_id AS value, CONCAT(employees.first_name, ' ', employees.last_name) AS name FROM employees`;
     db.query(sql, (err, result) => {
        
         if (err) throw err;
@@ -193,7 +193,7 @@ const promptUpdate = () => {
             inquirer.prompt([
                 {
                     type: 'list',
-                    name: 'employee_id',
+                    name: 'emp_id',
                     message: "Please select the employee who's role you'd like to update.",
                     choices: empArray
                 },
@@ -205,7 +205,7 @@ const promptUpdate = () => {
                 }
             ])
                 .then(updateData => {
-                    const update = new Update(updateData.employee_id, updateData.role_id);
+                    const update = new Update(updateData.emp_id, updateData.role_id);
                     updateRole(update);
                     console.log("Updated Role");
                 });
